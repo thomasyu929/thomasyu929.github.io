@@ -6,7 +6,6 @@ categories: Theme Settings
 tag:
   - theme
   - markdown
-description: Front matter documentation
 ---
 
 > Front-matter is a block of YAML or JSON at the beginning of the file that is used to configure settings for your writings. Front-matter is terminated by three dashes when written in YAML or three semicolons when written in JSON.
@@ -59,7 +58,7 @@ date: 2013/7/13 20:46:25
 
 #### Example
 
-```yaml
+```yml
 categories:
   - Sports
   - Baseball
