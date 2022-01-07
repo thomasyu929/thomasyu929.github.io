@@ -108,4 +108,5 @@ theme: hexo-theme-peomas
 # Deployment
 ## Docs: https://hexo.io/docs/one-command-deployment
 deploy:
-  type: ''
+    type: git
+    repo: https://github.com/thomasyu929/thomasyu929.github.io.git
