@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <link rel="icon" href="/img/favicon.png">
+
+  
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css">
+
+  
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5/dist/css/bootstrap.min.css">
+
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+
+  
+  <title>Understanding RxJS Operators: forkJoin, zip, combineLatest, and withLatestFrom - Peomas</title>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <header>
+    <nav id="navbar" class="navbar fixed-nav scrolling-navbar">
+  <div class="container">
+    <div class="mark-wrapper">
+       
+      <div class="title-mark">Peomas</div>
+    </div>
+  
+    <button id="menu-btn" class="btn menu-btn" type="button" data-bs-toggle="collapse" data-bs-target="#nav-menu">
+      <div class="menu-icon"><span></span><span></span><span></span></div>
+    </button>
+  
+    <div id="nav-menu" class="collapse menu-wrapper">
+      <ul>
+        
+          <li>
+            <a href="/">Home </a>
+          </li>
+        
+          <li>
+            <a href="/archives">Archives </a>
+          </li>
+        
+          <li>
+            <a href="/categories">Category </a>
+          </li>
+        
+          <li>
+            <a href="/tags">Tag </a>
+          </li>
+        
+          <li>
+            <a href="/about">About </a>
+          </li>
+        
+        <li class="search-icon">
+          <button class="btn" data-bs-toggle="modal" data-bs-target="#searchModal" aria-label="Search">
+            <i class="fas fa-search"></i>
+          </button>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  </header>
+
+  <main>
+    <div class="container">
+      <div id="main">
+        <div class="row py-5">
+          <div class="col">
+            <div class="row">
+  <div class="left-content">
+    <article class="post-wrapper markdown-body">
+  <h2 class="post-title">
+    Understanding RxJS Operators: forkJoin, zip, combineLatest, and withLatestFrom
+  </h2>
+  <div class="post-meta">
+    <time datetime="Invalid date Invalid date ">2020-09-21</time>
+    
+        by <span class="author">Jecelyn Yeen</span>
+    
+    
+      
+        <a class="tag" href="/categories/Tutorial/">Tutorial</a> 
+       
+    
+    
+      
+        <a class="tag" href="/tags/RxJS/">RxJS</a> 
+      
+        <a class="tag" href="/tags/Angular/">Angular</a> 
+       
+    
+    
+      <div class="source">Source: <a target="_blank" rel="noopener" href="https://www.digitalocean.com/community/tutorials/rxjs-operators-forkjoin-zip-combinelatest-withlatestfrom">https://www.digitalocean.com/community/tutorials/rxjs-operators-forkjoin-zip-combinelatest-withlatestfrom</a></div>
+    
+  </div>
+  
+  <div id="content">
+    <h3 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h3><p>If you are confused about the differences between <code>forkJoin</code>, <code>zip</code>, <code>combineLatest</code>, and <code>withLatestFrom</code>, you are not alone.</p>
+<blockquote>
+<p>These four operators are what we know as <code>combination operators</code> - we use them when we need to <strong>join information from multiple observables</strong>.</p>
+</blockquote>
+<p>This article will talk about the usage and differences between these four operators, so you know which one to use when the time comes.</p>
+<h2 id="Setup"><a href="#Setup" class="headerlink" title="Setup"></a>Setup</h2><p>Imagine you are <strong>printing t-shirts</strong>. Ms. Color holds the <code>color</code> information, and Mr. Logo holds the <code>logo</code> information. Both of them will pick <code>color</code> and <code>logo</code> spontaneously. You will need to wait and combine these two pieces of information continuously in order to print t-shirts. Ms. Color and Mr. Logo represent two observables in our code - <code>color$</code> and <code>logo$</code>.</p>
+<p><img src="https://scotch-res.cloudinary.com/image/upload/q_auto:good,f_auto/media/272/qp101EyBRxabSGbqdDz2_10.png" alt="you, ms. color &amp; mr. logo"></p>
+<pre class="line-numbers language-typescript" data-language="typescript"><code class="language-typescript">&#x2F;&#x2F; 0. Import Rxjs operators
+import &#123; forkJoin, zip, combineLatest, Subject &#125; from &#39;rxjs&#39;;
+import &#123; withLatestFrom, take, first &#125; from &#39;rxjs&#x2F;operators&#39;;
+
+&#x2F;&#x2F; 1. Define shirt color and logo options
+type Color &#x3D; &#39;white&#39; | &#39;green&#39; | &#39;red&#39; | &#39;blue&#39;;
+type Logo &#x3D; &#39;fish&#39; | &#39;dog&#39; | &#39;bird&#39; | &#39;cow&#39;;
+
+&#x2F;&#x2F; 2. Create the two persons - color and logo observables,
+&#x2F;&#x2F; They will communicate with us later (when we subscribe)
+const color$ &#x3D; new Subject&lt;Color&gt;();
+const logo$ &#x3D; new Subject&lt;Logo&gt;();
+
+&#x2F;&#x2F; 3. We are ready to start printing shirts. You need to subscribe to color and logo observables to produce shirts. We will write that code here later.
+...
+
+&#x2F;&#x2F; 4. The two persons(observables) are doing their job, picking color and logo
+color$.next(&#39;white&#39;);
+logo$.next(&#39;fish&#39;);
+
+color$.next(&#39;green&#39;);
+logo$.next(&#39;dog&#39;);
+
+color$.next(&#39;red&#39;);
+logo$.next(&#39;bird&#39;);
+
+color$.next(&#39;blue&#39;);
+
+&#x2F;&#x2F; 5. When the two persons (observables) have no more info, they say bye. We will write code here later.
+...</code></pre>
+
+<p>We created two observables by using <a target="_blank" rel="noopener" href="https://rxjs-dev.firebaseapp.com/api/index/class/Subject">Subject</a>. For part 4 in the code, every <code>.next(&lt;value&gt;)</code> means Ms. Color or Mr. Logo is picking color or logo.</p>
+<p>Take note of the sequence of information (part 4 in our code), here is the summary:</p>
+<p><img src="https://scotch-res.cloudinary.com/image/upload/q_auto:good,f_auto/media/272/6C1OMCYRQwm2puCgTyXf_sequence.gif" alt="sequence of info"></p>
+<pre class="line-numbers language-none"><code class="language-none">1. Ms. Color picks WHITE
+2. Mr. Logo picks FISH
+3. Ms. Color picks GREEN
+4. Mr. Logo picks DOG
+5. Ms. Color picks RED
+6. Mr. Logo picks BIRD
+7. Ms. Color picks BLUE</code></pre>
+
+<p>Later, we will update our code (part 3 &amp; 5) to subscribe to both color and logo observables using the four different operators to see how the shirts are produced differently.</p>
+<p>All set. Let’s start exploring our first operator!</p>
+<h2 id="zip-the-love-birds-operator"><a href="#zip-the-love-birds-operator" class="headerlink" title="zip - the love birds operator"></a>zip - the love birds operator</h2><p>I call the <code>zip</code> operator the love birds operator. Love birds need to always be together.</p>
+<p>Let’s replace our code (part 3) with below:</p>
+<pre class="line-numbers language-typescript" data-language="typescript"><code class="language-typescript">&#x2F;&#x2F; 3. We are ready to start printing shirt...
+zip(color$, logo$)
+    .subscribe(([color, logo]) &#x3D;&gt; console.log(&#96;$&#123;color&#125; shirt with $&#123;logo&#125;&#96;));</code></pre>
+
+<h3 id="TL-DR"><a href="#TL-DR" class="headerlink" title="TL;DR"></a>TL;DR</h3><p>For those of you who are not familiar with JavaScript ES6/ES2015 <a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment">destructuring assignment</a>, you might find the syntax in subscribe <code>[color, logo]</code> a little bit odd.</p>
+<p>When we zip <code>color$</code> and <code>logo$</code>, we expect to receive an array of 2 items during <code>subscribe</code>, the first item is <code>color</code> and the second is <code>logo</code> (follow their orders in <code>zip</code> function).</p>
+<p>The traditional way of writing it would be <code>.subscribe((data) =&gt; console.log(</code>${data[0]} shirt with ${data[1]}<code>))</code>. As you can see, it’s not very obvious that <code>data[0]</code> is color.</p>
+<p>ES6 allows us to unpack the value from arrays. Therefore, we unpack <code>data</code> into <code>[color, logo]</code> straight away.</p>
+<h3 id="Result"><a href="#Result" class="headerlink" title="Result"></a>Result</h3><p>Alright, let’s go back to our code and run it. The shirt printing result would be:</p>
+<p><img src="https://scotch-res.cloudinary.com/image/upload/q_auto:good,f_auto/media/272/SYFLX4RmeFoUwjU2lxdQ_zip.gif" alt="zip - printed shirts"></p>
+<p>Here is what gets logged to the console:</p>
+<pre class="line-numbers language-none"><code class="language-none">1. white shirt with fish
+2. green shirt with dog
+3. red shirt with bird</code></pre>
+
+<h3 id="How-does-zip-work"><a href="#How-does-zip-work" class="headerlink" title="How does zip work?"></a>How does <code>zip</code> work?</h3><p>Again, <code>zip</code> operator is the love birds operator. In our case, <code>color</code> will wait for <code>logo</code> whenever there are new values. Both values must change, then only the log gets triggered.</p>
+<pre class="line-numbers language-none"><code class="language-none">1. Ms. Color picks WHITE
+2. Mr. Logo picks FISH &lt;- log 01, WHITE + FISH in pair, love birds!
+3. Ms. Color picks GREEN
+4. Mr. Logo picks DOG &lt;- log 02, GREEN + DOG in pair, love birds!
+5. Ms. Color picks RED
+6. Mr. Logo picks BIRD &lt;- log 03, RED + BIRD in pair love birds!
+7. Ms. Color picks BLUE &lt;- waiting for love...</code></pre>
+
+<p><code>zip</code> operator can accept more than 2 observables - no matter how many observables, they must all wait for each other, no man left behind!</p>
+<h2 id="combineLatest"><a href="#combineLatest" class="headerlink" title="combineLatest"></a>combineLatest</h2><p>I call <code>combineLatest</code> operator the independent operator. They are independent and don’t wait for each other.</p>
+<p>Let’s replace the setup code part 3 with the below code:</p>
+<pre class="line-numbers language-typescript" data-language="typescript"><code class="language-typescript">&#x2F;&#x2F; 3. We are ready to start printing shirt...
+combineLatest(color$, logo$)
+    .subscribe(([color, logo]) &#x3D;&gt; console.log(&#96;$&#123;color&#125; shirt with $&#123;logo&#125;&#96;));</code></pre>
+
+<p>The shirt printing result would be:</p>
+<p><img src="https://scotch-res.cloudinary.com/image/upload/q_auto:good,f_auto/media/272/e5wyQseJR9CoQaOi0Kfw_combinelatest.gif" alt="combinedLatest - printed shirts"></p>
+<p>Here is what get to log in the console:</p>
+<pre class="line-numbers language-none"><code class="language-none">1. white shirt with fish
+2. green shirt with fish
+3. green shirt with dog
+4. red shirt with dog
+5. red shirt with bird
+6. blue shirt with bird</code></pre>
+
+<h3 id="How-does-combineLatest-work"><a href="#How-does-combineLatest-work" class="headerlink" title="How does combineLatest work?"></a>How does <code>combineLatest</code> work?</h3><p>In our case, the first function is triggered after both <code>color</code> and <code>logo</code> values change. From there, either the <code>color</code> or <code>logo</code> value change will trigger the log.</p>
+<pre class="line-numbers language-none"><code class="language-none">1. Ms. Color picks WHITE
+2. Mr. Logo picks FISH &lt;- log 01, color + logo first meet, let&#39;s go dutch!
+3. Ms. Color picks GREEN &lt;- log 02, GREEN + FISH
+4. Mr. Logo picks DOG &lt;- log 03, DOG + GREEN
+5. Ms. Color picks RED &lt;- log 04, RED + DOG
+6. Mr. Logo picks BIRD &lt;- log 05 BIRD + RED
+7. Ms. Color picks BLUE &lt;- log 06 BLUE + BIRD</code></pre>
+
+<h2 id="withLatestFrom"><a href="#withLatestFrom" class="headerlink" title="withLatestFrom"></a>withLatestFrom</h2><p>I call <code>withLatestFrom</code> operator the primary/secondary operator. At first, the primary must meet the secondary. After that, the primary will take the lead, giving command. The secondary will follow.</p>
+<p>Let’s replace the code in part 3 with the below code:</p>
+<pre class="line-numbers language-typescript" data-language="typescript"><code class="language-typescript">&#x2F;&#x2F; 3. We are ready to start printing shirt...
+color$.pipe(withLatestFrom(logo$))
+    .subscribe(([color, logo]) &#x3D;&gt; console.log(&#96;$&#123;color&#125; shirt with $&#123;logo&#125;&#96;));</code></pre>
+
+<p>The shirt printing result would be:</p>
+<p><img src="https://scotch-res.cloudinary.com/image/upload/q_auto:good,f_auto/media/272/MKm4pKfdSeoW5YjaTorj_withlatestfrom.gif" alt="withLatestFrom - printed shirts"></p>
+<p>Here is what is logged to the console:</p>
+<pre class="line-numbers language-none"><code class="language-none">1. green shirt with fish
+2. red shirt with dog
+3. blue shirt with bird</code></pre>
+
+<h3 id="How-does-withLatestFrom-work"><a href="#How-does-withLatestFrom-work" class="headerlink" title="How does withLatestFrom work?"></a>How does <code>withLatestFrom</code> work?</h3><p>Can you guess who is the primary and who is the secondary in our case?</p>
+<p>You guessed it! <code>color</code> is the primary while <code>logo</code> is the secondary. At first (only once), <code>color</code>(primary) will look for <code>logo</code>(secondary). Once the <code>logo</code>(secondary) has responded, <code>color</code>(primary) will take the lead. The log will get triggered whenever the next <code>color</code>(primary) value is changed. The <code>logo</code>(secondary) value changes will not trigger the console log.</p>
+<pre class="line-numbers language-none"><code class="language-none">1. Ms. Color picks WHITE &lt;- nothing happen, waiting for secondary
+2. Mr. Logo picks FISH &lt;- secondary found, wait for the primary&#39;s command
+3. Ms. Color picks GREEN &lt;- log 01, primary says GREEN! So, GREEN + FISH
+4. Mr. Logo picks DOG
+5. Ms. Color picks RED &lt;- log 02, primary says RED! So, RED + DOG
+6. Mr. Logo picks BIRD
+7. Ms. Color picks BLUE &lt;- log 03 primary says BLUE! So, BLUE + BIRD</code></pre>
+
+<h2 id="forkJoin"><a href="#forkJoin" class="headerlink" title="forkJoin"></a>forkJoin</h2><p>I call <code>forkJoin</code> operator the final destination operator because they only commit once all parties are completely true.</p>
+<p>Let’s replace the code in part 3 with the following code:</p>
+<pre class="line-numbers language-typescript" data-language="typescript"><code class="language-typescript">&#x2F;&#x2F; 3. We are ready to start printing shirt...
+forkJoin(color$, logo$)
+    .subscribe(([color, logo]) &#x3D;&gt; console.log(&#96;$&#123;color&#125; shirt with $&#123;logo&#125;&#96;));</code></pre>
+
+<p>The shirt printing result would be:<br><img src="https://scotch-res.cloudinary.com/image/upload/q_auto:good,f_auto/media/272/r5PfUUWCQmubdxXlWa9C_fork-join-nothing.png" alt="forkJoin - printed shirts"></p>
+<p>You will notice that nothing is logged in the console.</p>
+<p>In our code, both <code>color</code> and <code>logo</code> observables are not complete. We can keep pushing value by calling <code>.next</code> - that means they are not serious enough and thus they are not <code>final destination</code> of each other.</p>
+<p>To be serious, we need to <code>complete</code> both observables. Replace the code in part 5 with the following:</p>
+<pre class="line-numbers language-typescript" data-language="typescript"><code class="language-typescript">&#x2F;&#x2F; 5. When the two persons(observables) ...
+color$.complete();
+logo$.complete();</code></pre>
+
+<p>With the above code changes, Here is our shirt printing result:</p>
+<p><img src="https://scotch-res.cloudinary.com/image/upload/q_auto:good,f_auto/media/272/OQzlcACSVekxWgkuq30A_forkjoin.gif" alt="forkJoin (complete) - printed shirts"></p>
+<p>This is what is logged to the console:</p>
+<pre class="line-numbers language-none"><code class="language-none">1. blue shirt with bird</code></pre>
+
+<p>Here is the sequence of the log:</p>
+<pre class="line-numbers language-none"><code class="language-none">1. Ms. Color picks WHITE
+2. Mr. Logo picks FISH
+3. Ms. Color picks GREEN
+4. Mr. Logo picks DOG
+5. Ms. Color picks RED
+6. Mr. Logo picks BIRD
+7. Ms. Color picks BLUE
+8. Ms. Color completed &lt;-- color is serious!
+9. Mr. Logo completed &lt;--- log no 01, both logo &amp; color are completed. Final destination!</code></pre>
+
+<p>There is more than one way to complete observables. There are operators that allow you to auto-complete observables when conditions are met, for example <a target="_blank" rel="noopener" href="https://rxjs-dev.firebaseapp.com/api/operators/take">take</a>, <a target="_blank" rel="noopener" href="https://rxjs-dev.firebaseapp.com/api/operators/takeUntil">takeUntil</a>, and <a target="_blank" rel="noopener" href="https://rxjs-dev.firebaseapp.com/api/operators/first">first</a>.</p>
+<p>Let’s say you only want to make one shirt; you only need to know the first <code>color</code> and <code>logo</code>. In this case, you don’t care about the rest of the info that Ms. Color &amp; Mr. Logo provide. You can make use of the <code>take</code> or <code>first</code> operator to achieve auto-complete observables once the first <code>color</code> and <code>logo</code> emit.</p>
+<p>Replace part 3 of the code with the following:</p>
+<pre class="line-numbers language-typescript" data-language="typescript"><code class="language-typescript">&#x2F;&#x2F; 3. We are ready to start printing shirt...
+const firstColor$ &#x3D; color$.pipe(take(1));
+const firstLogo$ &#x3D; logo$.pipe(first());
+
+forkJoin(firstColor$, firstLogo$)
+    .subscribe(([color, logo]) &#x3D;&gt; console.log(&#96;$&#123;color&#125; shirt with $&#123;logo&#125;&#96;));</code></pre>
+
+<p> You can remove all the code in part 5 as well. We don’t need the two lines <code>.complete()</code> (as previous code) because <code>take</code> and <code>first</code> will auto-complete the observable when the is condition met.</p>
+<p>With the above change, you should see a <strong>white shirt with fish</strong>:</p>
+<p><img src="https://res.cloudinary.com/scotch/image/upload/v1536601852/1ZfLavc7RnueTUAAvzFS_white_1_eesrye.png" alt="forkjoin (auto complete) - printed shirtst"></p>
+<h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><p>Here is the summary of all results:<br><img src="https://res.cloudinary.com/scotch/image/upload/v1536601871/TZ78oYErQpOU3bFG9krs_Untitled_20design_20_1_20_1_m1fwev.png" alt="one page answer"></p>
+<p>In summary, these four operators trigger the next action (subscribe function in our case) in slightly different conditions.</p>
+<p>In some cases, the outcome of using different operators might be the same (that’s why people get confused on which one to use), it would be good to understand the intention of the operator &amp; decide accordingly.</p>
+<p>One of the most common use cases of combination operators would be <strong>calling a few APIs, wait for all results return, then executing next logic</strong>. Either <code>forkJoin</code> or <code>zip</code> will work and return the same result because API calls are one-time only, auto-completed once result is returned (e.g. Angular <code>httpClient.get</code>).</p>
+<p>However, by understanding the operators more, <code>forkJoin</code> might be more suitable in this case. It is because we “seriously” want to wait for all HTTP responses to complete before proceeding to the next step. <code>zip</code> is intended for observables with multiple emits. In our case, we expect only one emit for each HTTP request. Therefore, I think <code>forkJoin</code> is more appropriate.</p>
+
+  </div>
+
+</article>
+  </div>
+  <div class="right-content">
+    <div id="toc" class="toc-wrapper"></div>
+  <div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+     
+  <button id="scroll-to-top" class="btn btn-top" aria-label="Scroll To Top">
+    <i class="fas fa-arrow-up"></i>
+  </button>
+ 
+
+  </main>
+
+  <div class="footer-wrapper">
+  <div class="left-content"></div>
+  <div class="right-content">
+    <div>Copyright &copy;2022</div>
+    <div>Powered By <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a> - Theme <a target="_blank" rel="noopener" href="https://github.com/thomasyu929/hexo-theme-peomas">Peomas</a></div>
+  </div>
+</div>
+
+  <div id="searchModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Search</h5>
+        <button type="button" class="btn btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="input-wrapper">
+          <i class="fas fa-search"></i>
+          <input id="search" class="search-input" type="text" placeholder="Input content to search..." />
+        </div>
+        <ul id="result" class="list-group result-wrapper">
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5/dist/js/bootstrap.min.js"></script>
+
+
+<script src="/js/prism.js"></script>
+
+
+
+  
+<script src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js"></script>
+
+  
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css">
+
+  
+<script src="/js/nprogress.js"></script>
+
+
+
+ 
+  
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.11.1/tocbot.min.js"></script>
+
+  
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.11.1/tocbot.css">
+
+ 
+
+
+<script src="/js/event.js"></script>
+
+
+<script src="/js/search.js"></script>
+
+
+<script src="/js/plugin.js"></script>
+
+
+
+</body>
+
+</html>

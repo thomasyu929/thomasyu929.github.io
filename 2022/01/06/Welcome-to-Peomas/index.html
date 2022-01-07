@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <link rel="icon" href="/img/favicon.png">
+
+  
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css">
+
+  
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5/dist/css/bootstrap.min.css">
+
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+
+  
+  <title>Welcome to Peomas - Peomas</title>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <header>
+    <nav id="navbar" class="navbar fixed-nav scrolling-navbar">
+  <div class="container">
+    <div class="mark-wrapper">
+       
+      <div class="title-mark">Peomas</div>
+    </div>
+  
+    <button id="menu-btn" class="btn menu-btn" type="button" data-bs-toggle="collapse" data-bs-target="#nav-menu">
+      <div class="menu-icon"><span></span><span></span><span></span></div>
+    </button>
+  
+    <div id="nav-menu" class="collapse menu-wrapper">
+      <ul>
+        
+          <li>
+            <a href="/">Home </a>
+          </li>
+        
+          <li>
+            <a href="/archives">Archives </a>
+          </li>
+        
+          <li>
+            <a href="/categories">Category </a>
+          </li>
+        
+          <li>
+            <a href="/tags">Tag </a>
+          </li>
+        
+          <li>
+            <a href="/about">About </a>
+          </li>
+        
+        <li class="search-icon">
+          <button class="btn" data-bs-toggle="modal" data-bs-target="#searchModal" aria-label="Search">
+            <i class="fas fa-search"></i>
+          </button>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  </header>
+
+  <main>
+    <div class="container">
+      <div id="main">
+        <div class="row py-5">
+          <div class="col">
+            <div class="row">
+  <div class="left-content">
+    <article class="post-wrapper markdown-body">
+  <h2 class="post-title">
+    Welcome to Peomas
+  </h2>
+  <div class="post-meta">
+    <time datetime="Invalid date Invalid date ">2022-01-06</time>
+    
+        by <span class="author">Thomas Yu</span>
+    
+    
+      
+        <a class="tag" href="/categories/Theme-Settings/">Theme Settings</a> 
+       
+    
+    
+      
+        <a class="tag" href="/tags/theme/">theme</a> 
+      
+        <a class="tag" href="/tags/markdown/">markdown</a> 
+      
+        <a class="tag" href="/tags/Hexo/">Hexo</a> 
+       
+    
+    
+  </div>
+  
+  <div id="content">
+    <h2 id="Features"><a href="#Features" class="headerlink" title="Features"></a>Features</h2><ul>
+<li>Github style markdown</li>
+<li>Local search</li>
+<li>Tags support</li>
+<li>Categories support</li>
+<li>Responsive layout</li>
+<li>About personal page</li>
+<li>Pagination</li>
+</ul>
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Installation"><a href="#Installation" class="headerlink" title="Installation"></a>Installation</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">$ git clone https:&#x2F;&#x2F;github.com&#x2F;thomasyu929&#x2F;hexo-theme-peomas.git</code></pre>
+
+<p>Set the theme to <code>hexo-theme-peomas</code> in the <code>_config.yml</code> which in the root path.</p>
+<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml">## Themes: https:&#x2F;&#x2F;hexo.io&#x2F;themes&#x2F;
+theme: hexo-theme-peomas</code></pre>
+
+<h4 id="About-Page"><a href="#About-Page" class="headerlink" title="About Page"></a>About Page</h4><p>About page needs to be created by manually.</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">$ hexo new page about</code></pre>
+
+<p>Then, open <code>/source/about/index.md</code> which in your blog directory. Add <code>layout</code> property.</p>
+<pre class="line-numbers language-markdown" data-language="markdown"><code class="language-markdown">---
+title: about
+layout: about
+---
+Add content for this markdown, this content will show on about page.</code></pre>
+
+<h4 id="Category-Page"><a href="#Category-Page" class="headerlink" title="Category Page"></a>Category Page</h4><p>Category page needs to be created by manually.</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">$ hexo new page category</code></pre>
+
+<p>Then, open <code>/source/category/index.md</code> which in your blog directory. Add <code>layout</code> property.</p>
+<pre class="line-numbers language-markdown" data-language="markdown"><code class="language-markdown">---
+title: about
+layout: category
+---</code></pre>
+
+<h4 id="Tag-Page"><a href="#Tag-Page" class="headerlink" title="Tag Page"></a>Tag Page</h4><p>Tag page needs to be created by manually.</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">$ hexo new page tag</code></pre>
+
+<p>Then, open <code>/source/tag/index.md</code> which in your blog directory. Add <code>layout</code> property.</p>
+<pre class="line-numbers language-markdown" data-language="markdown"><code class="language-markdown">---
+title: about
+layout: tag
+---</code></pre>
+
+<h2 id="Configuration"><a href="#Configuration" class="headerlink" title="Configuration"></a>Configuration</h2><h4 id="Favicon"><a href="#Favicon" class="headerlink" title="Favicon"></a>Favicon</h4><p>Favicon can replace in the theme’s <code>_config.yml</code></p>
+<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml">favicon: &#x2F;img&#x2F;favicon.png</code></pre>
+
+<p>Also have to replace the file in the <code>theme/source/img</code>.</p>
+<h4 id="Logo-Mark"><a href="#Logo-Mark" class="headerlink" title="Logo Mark"></a>Logo Mark</h4><p>Logo Mark which in the left of the navigation can be customized.</p>
+<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"># Logo Mark
+mark: Peomas
+logo_mark: null</code></pre>
+
+<p>Default only show mark, just text mark. Can add path for <code>logo_mark</code> , that way will show the logo pic.</p>
+<h4 id="Scroll-To-Top-Button"><a href="#Scroll-To-Top-Button" class="headerlink" title="Scroll To Top Button"></a>Scroll To Top Button</h4><p>Scroll button can be disabled by set to false in <code>_config.yml</code></p>
+<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"># Scroll button
+scroll_top_btn:
+  enable: true</code></pre>
+
+<h4 id="NProgress-Bar"><a href="#NProgress-Bar" class="headerlink" title="NProgress Bar"></a>NProgress Bar</h4><p>NProgress can be disabled or change bar color in <code>_config.yml</code></p>
+<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"># NProgress
+nprogress: 
+  enable: true
+  color: &quot;#131313&quot;</code></pre>
+
+<h4 id="Menu"><a href="#Menu" class="headerlink" title="Menu"></a>Menu</h4><p>The menu is configured in the theme’s <code>_config.yml</code>.</p>
+<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"># Navigation menu
+menu:
+  Home: &#x2F;
+  Archives: &#x2F;archives
+  Category: &#x2F;categories
+  Tag: &#x2F;tags
+  About: &#x2F;about</code></pre>
+
+<h4 id="Index-Page"><a href="#Index-Page" class="headerlink" title="Index Page"></a>Index Page</h4><p>The index page related settings are configured in the theme’s <code>_config.yml</code>.</p>
+<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"># Index Page config
+index:
+  enable_sticky: true
+  post_url_target: _self
+  enable_category: true
+  enable_tag: true</code></pre>
+
+<h4 id="Table-of-Contents"><a href="#Table-of-Contents" class="headerlink" title="Table of Contents"></a>Table of Contents</h4><p>Table of contents was generated based on <code>Tocbot</code>. It can be disabled in <code>_config.yml</code></p>
+<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"># Post Page config
+toc:
+  enable: true</code></pre>
+
+<h4 id="About-Page-1"><a href="#About-Page-1" class="headerlink" title="About Page"></a>About Page</h4><p>The about page related settings are configured in the theme’s <code>_config.yml</code>.</p>
+<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml">about:
+  avatar: 
+    enable: true
+    link: &#x2F;img&#x2F;avatar.png
+  title: Thomas Yu
+  subTitle: Front-End Developer - Labcorp
+  icon:
+  - &#123; class: &quot;fab fa-github&quot;, url: &quot;https:&#x2F;&#x2F;github.com&#x2F;thomasyu929&quot;, info: &quot;Thomas Yu&#39;s Github&quot; &#125;
+  - &#123; class: &quot;fas fa-envelope&quot;, url: &quot;mailto:yby4301955@gmail.com&quot;, info: &quot;Mail to me&quot; &#125;
+  - &#123; class: &quot;fab fa-linkedin&quot;, url: &quot;https:&#x2F;&#x2F;linkedin.com&quot;, info: &quot;LinkedIn&quot; &#125;
+  - &#123; class: &quot;fas fa-rss&quot;, url: &quot;&#x2F;atom.xml&quot;, info: &quot;Subscribe Thomas&#39;s blog&quot;&#125;</code></pre>
+
+<h4 id="Tag-Page-1"><a href="#Tag-Page-1" class="headerlink" title="Tag Page"></a>Tag Page</h4><p>The tag page was generated by <code>tagcloud</code> automatically. <code>tagcloud</code> related settings are configured in the theme’s <code>_config.yml</code>.</p>
+<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"># Tag Page config
+tagcloud:
+  min_font: 15
+  max_font: 30
+  unit: px
+  start_color: &quot;#337ab7&quot;
+  end_color: &quot;#0d6efd&quot;</code></pre>
+
+
+  </div>
+
+</article>
+  </div>
+  <div class="right-content">
+    <div id="toc" class="toc-wrapper"></div>
+  <div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+     
+  <button id="scroll-to-top" class="btn btn-top" aria-label="Scroll To Top">
+    <i class="fas fa-arrow-up"></i>
+  </button>
+ 
+
+  </main>
+
+  <div class="footer-wrapper">
+  <div class="left-content"></div>
+  <div class="right-content">
+    <div>Copyright &copy;2022</div>
+    <div>Powered By <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a> - Theme <a target="_blank" rel="noopener" href="https://github.com/thomasyu929/hexo-theme-peomas">Peomas</a></div>
+  </div>
+</div>
+
+  <div id="searchModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Search</h5>
+        <button type="button" class="btn btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="input-wrapper">
+          <i class="fas fa-search"></i>
+          <input id="search" class="search-input" type="text" placeholder="Input content to search..." />
+        </div>
+        <ul id="result" class="list-group result-wrapper">
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5/dist/js/bootstrap.min.js"></script>
+
+
+<script src="/js/prism.js"></script>
+
+
+
+  
+<script src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js"></script>
+
+  
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css">
+
+  
+<script src="/js/nprogress.js"></script>
+
+
+
+ 
+  
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.11.1/tocbot.min.js"></script>
+
+  
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.11.1/tocbot.css">
+
+ 
+
+
+<script src="/js/event.js"></script>
+
+
+<script src="/js/search.js"></script>
+
+
+<script src="/js/plugin.js"></script>
+
+
+
+</body>
+
+</html>
