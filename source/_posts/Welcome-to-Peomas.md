@@ -7,6 +7,7 @@ tag:
   - theme
   - markdown
   - Hexo
+sticky: 10
 ---
 
 ## Features
