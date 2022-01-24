@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <link rel="icon" href="/img/favicon.png">
+
+  
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css">
+
+  
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5/dist/css/bootstrap.min.css">
+
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+
+  
+  <title>Promise/A+ - implementation - Peomas</title>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <header>
+    <nav id="navbar" class="navbar fixed-nav scrolling-navbar">
+  <div class="container">
+    <div class="mark-wrapper">
+       
+      <div class="title-mark">Peomas</div>
+    </div>
+  
+    <button id="menu-btn" class="btn menu-btn" type="button" data-bs-toggle="collapse" data-bs-target="#nav-menu">
+      <div class="menu-icon"><span></span><span></span><span></span></div>
+    </button>
+  
+    <div id="nav-menu" class="collapse menu-wrapper">
+      <ul>
+        
+          <li>
+            <a href="/">Home </a>
+          </li>
+        
+          <li>
+            <a href="/archives">Archives </a>
+          </li>
+        
+          <li>
+            <a href="/categories">Category </a>
+          </li>
+        
+          <li>
+            <a href="/tags">Tag </a>
+          </li>
+        
+          <li>
+            <a href="/about">About </a>
+          </li>
+        
+        <li class="search-icon">
+          <button class="btn" data-bs-toggle="modal" data-bs-target="#searchModal" aria-label="Search">
+            <i class="fas fa-search"></i>
+          </button>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  </header>
+
+  <main>
+    <div class="container">
+      <div id="main">
+        <div class="row py-5">
+          <div class="col">
+            <div class="row">
+  <div class="left-content">
+    <article class="post-wrapper markdown-body">
+  <h2 class="post-title">
+    Promise/A+ - implementation
+  </h2>
+  <div class="post-meta">
+    <time datetime="Invalid date Invalid date ">2022-01-11</time>
+    
+    
+      
+        <a class="tag" href="/categories/experience/">experience</a> 
+       
+    
+    
+      
+        <a class="tag" href="/tags/Javascript/">Javascript</a> 
+      
+        <a class="tag" href="/tags/Promise/">Promise</a> 
+       
+    
+    
+  </div>
+  
+  <div id="content">
+    <blockquote>
+<p>A <em>promise</em> represents the eventual result of an asynchronous operation. The primary way of interacting with a promise is through its <code>then</code> method, which registers callbacks to receive either a promise’s eventual value or the reason why the promise cannot be fulfilled.</p>
+</blockquote>
+<h2 id="Before-Start"><a href="#Before-Start" class="headerlink" title="Before Start"></a>Before Start</h2><p><em>Promise/A+ specification:</em> <a target="_blank" rel="noopener" href="https://github.com/promises-aplus/promises-spec">https://github.com/promises-aplus/promises-spec</a></p>
+<p><em>Promise/A+ test suite:</em> <a target="_blank" rel="noopener" href="https://github.com/promises-aplus/promises-tests">https://github.com/promises-aplus/promises-tests</a></p>
+<h2 id="Promise"><a href="#Promise" class="headerlink" title="Promise"></a>Promise</h2><h3 id="Terminology"><a href="#Terminology" class="headerlink" title="Terminology"></a>Terminology</h3><blockquote>
+<ol>
+<li>“promise” is an object or function with a <code>then</code> method whose behavior conforms to this specification.</li>
+<li>“thenable” is an object or function that defines a <code>then</code> method.</li>
+<li>“value” is any legal JavaScript value (including <code>undefined</code>, a thenable, or a promise).</li>
+<li>“exception” is a value that is thrown using the <code>throw</code> statement.</li>
+<li>“reason” is a value that indicates why a promise was rejected.</li>
+</ol>
+</blockquote>
+<h3 id="Promise-State"><a href="#Promise-State" class="headerlink" title="Promise State"></a>Promise State</h3><p>A promise must be in one of three states: <code>pending</code>, <code>fulfilled</code>, or <code>rejected</code>.</p>
+<p><code>fulfilled</code> state need have an immutable <code>value</code>, <code>rejected</code> state need have an immutable <code>reason</code>.</p>
+<p><em>Note:</em> <code>immutable</code> means <code>===</code>, object only require reference not changed.</p>
+<h3 id="Then"><a href="#Then" class="headerlink" title="Then"></a>Then</h3><pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript">Promise.then(onFulfilled, onRejected);</code></pre>
+
+<p>Both of them are optional, if they are not function, must be ignored.</p>
+<p><code>then</code> will return <code>Promise</code> object.</p>
+<h3 id="Promise-example"><a href="#Promise-example" class="headerlink" title="Promise example"></a>Promise example</h3><pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript">const promise &#x3D; new Promise(function(resolve, reject) &#123;
+  &#x2F;&#x2F; ... some code
+  if (&#x2F;*async success*&#x2F;)&#123;
+  	resolve(value);    
+  &#125; else &#123;
+		reject(error);                      
+  &#125;
+&#125;);
+promise.then(function(value) &#123;
+  &#x2F;&#x2F; success
+&#125;, function(error) &#123;
+  &#x2F;&#x2F; failure		same as Promise.prototype.catch()
+&#125;);</code></pre>
+
+<hr>
+<h2 id="Implementation-based-on-Promise-A"><a href="#Implementation-based-on-Promise-A" class="headerlink" title="Implementation based on Promise/A+"></a>Implementation based on Promise/A+</h2><p>源码：<a target="_blank" rel="noopener" href="https://github.com/thomasyu929/leetcode-ui/blob/master/js-problems/_Promise/_Promise.js">https://github.com/thomasyu929/leetcode-ui/blob/master/js-problems/_Promise/_Promise.js</a></p>
+<h4 id="Related-Promise-methods"><a href="#Related-Promise-methods" class="headerlink" title="Related Promise methods"></a>Related Promise methods</h4><p>TODO - See above link for now.</p>
+<ul>
+<li><input checked="" disabled="" type="checkbox"> _Promise.resolve</li>
+<li><input checked="" disabled="" type="checkbox"> _Promise.reject</li>
+<li><input checked="" disabled="" type="checkbox"> _Promise.prototype.catch</li>
+<li><input checked="" disabled="" type="checkbox"> _Promise.prototype.finally</li>
+<li><input checked="" disabled="" type="checkbox"> _Promise.all</li>
+<li><input checked="" disabled="" type="checkbox"> _Promise.allSettled</li>
+<li><input checked="" disabled="" type="checkbox"> _Promise.any</li>
+<li><input checked="" disabled="" type="checkbox"> _Promise.race</li>
+</ul>
+
+  </div>
+
+</article>
+  </div>
+  <div class="right-content">
+    <div id="toc" class="toc-wrapper"></div>
+  <div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+     
+  <button id="scroll-to-top" class="btn btn-top" aria-label="Scroll To Top">
+    <i class="fas fa-arrow-up"></i>
+  </button>
+ 
+
+  </main>
+
+  <div class="footer-wrapper">
+  <div class="left-content"></div>
+  <div class="right-content">
+    <div>Copyright &copy;2022</div>
+    <div>Powered By <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a> - Theme <a target="_blank" rel="noopener" href="https://github.com/thomasyu929/hexo-theme-peomas">Peomas</a></div>
+  </div>
+</div>
+
+  <div id="searchModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Search</h5>
+        <button type="button" class="btn btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="input-wrapper">
+          <i class="fas fa-search"></i>
+          <input id="search" class="search-input" type="text" placeholder="Input content to search..." />
+        </div>
+        <ul id="result" class="list-group result-wrapper">
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5/dist/js/bootstrap.min.js"></script>
+
+
+<script src="/js/prism.js"></script>
+
+
+
+  
+<script src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js"></script>
+
+  
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css">
+
+  
+<script src="/js/nprogress.js"></script>
+
+
+
+ 
+  
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.11.1/tocbot.min.js"></script>
+
+  
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.11.1/tocbot.css">
+
+ 
+
+
+<script src="/js/event.js"></script>
+
+
+<script src="/js/search.js"></script>
+
+
+<script src="/js/plugin.js"></script>
+
+
+
+</body>
+
+</html>

@@ -4,6 +4,33 @@
   
     
     <entry>
+      <title>Promise/A+ - implementation</title>
+      <link href="/2022/01/11/Promise-implementation/"/>
+      <url>/2022/01/11/Promise-implementation/</url>
+      
+        <content type="html"><![CDATA[<blockquote><p>A <em>promise</em> represents the eventual result of an asynchronous operation. The primary way of interacting with a promise is through its <code>then</code> method, which registers callbacks to receive either a promise’s eventual value or the reason why the promise cannot be fulfilled.</p></blockquote><h2 id="Before-Start"><a href="#Before-Start" class="headerlink" title="Before Start"></a>Before Start</h2><p><em>Promise/A+ specification:</em> <a href="https://github.com/promises-aplus/promises-spec">https://github.com/promises-aplus/promises-spec</a></p><p><em>Promise/A+ test suite:</em> <a href="https://github.com/promises-aplus/promises-tests">https://github.com/promises-aplus/promises-tests</a></p><h2 id="Promise"><a href="#Promise" class="headerlink" title="Promise"></a>Promise</h2><h3 id="Terminology"><a href="#Terminology" class="headerlink" title="Terminology"></a>Terminology</h3><blockquote><ol><li>“promise” is an object or function with a <code>then</code> method whose behavior conforms to this specification.</li><li>“thenable” is an object or function that defines a <code>then</code> method.</li><li>“value” is any legal JavaScript value (including <code>undefined</code>, a thenable, or a promise).</li><li>“exception” is a value that is thrown using the <code>throw</code> statement.</li><li>“reason” is a value that indicates why a promise was rejected.</li></ol></blockquote><h3 id="Promise-State"><a href="#Promise-State" class="headerlink" title="Promise State"></a>Promise State</h3><p>A promise must be in one of three states: <code>pending</code>, <code>fulfilled</code>, or <code>rejected</code>.</p><p><code>fulfilled</code> state need have an immutable <code>value</code>, <code>rejected</code> state need have an immutable <code>reason</code>.</p><p><em>Note:</em> <code>immutable</code> means <code>===</code>, object only require reference not changed.</p><h3 id="Then"><a href="#Then" class="headerlink" title="Then"></a>Then</h3><pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript">Promise.then(onFulfilled, onRejected);</code></pre><p>Both of them are optional, if they are not function, must be ignored.</p><p><code>then</code> will return <code>Promise</code> object.</p><h3 id="Promise-example"><a href="#Promise-example" class="headerlink" title="Promise example"></a>Promise example</h3><pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript">const promise &#x3D; new Promise(function(resolve, reject) &#123;  &#x2F;&#x2F; ... some code  if (&#x2F;*async success*&#x2F;)&#123;  resolve(value);      &#125; else &#123;reject(error);                        &#125;&#125;);promise.then(function(value) &#123;  &#x2F;&#x2F; success&#125;, function(error) &#123;  &#x2F;&#x2F; failuresame as Promise.prototype.catch()&#125;);</code></pre><hr><h2 id="Implementation-based-on-Promise-A"><a href="#Implementation-based-on-Promise-A" class="headerlink" title="Implementation based on Promise/A+"></a>Implementation based on Promise/A+</h2><p>源码：<a href="https://github.com/thomasyu929/leetcode-ui/blob/master/js-problems/_Promise/_Promise.js">https://github.com/thomasyu929/leetcode-ui/blob/master/js-problems/_Promise/_Promise.js</a></p><h4 id="Related-Promise-methods"><a href="#Related-Promise-methods" class="headerlink" title="Related Promise methods"></a>Related Promise methods</h4><p>TODO - See above link for now.</p><ul><li><input checked="" disabled="" type="checkbox"> _Promise.resolve</li><li><input checked="" disabled="" type="checkbox"> _Promise.reject</li><li><input checked="" disabled="" type="checkbox"> _Promise.prototype.catch</li><li><input checked="" disabled="" type="checkbox"> _Promise.prototype.finally</li><li><input checked="" disabled="" type="checkbox"> _Promise.all</li><li><input checked="" disabled="" type="checkbox"> _Promise.allSettled</li><li><input checked="" disabled="" type="checkbox"> _Promise.any</li><li><input checked="" disabled="" type="checkbox"> _Promise.race</li></ul>]]></content>
+      
+      
+      <categories>
+          
+          <category> experience </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Javascript </tag>
+            
+            <tag> Promise </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>Welcome to Peomas</title>
       <link href="/2022/01/06/Welcome-to-Peomas/"/>
       <url>/2022/01/06/Welcome-to-Peomas/</url>
