@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <link rel="icon" href="/img/favicon.png">
+
+  
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css">
+
+  
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5/dist/css/bootstrap.min.css">
+
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+
+  
+  <title>TODO BLOG - Peomas</title>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <header>
+    <nav id="navbar" class="navbar fixed-nav scrolling-navbar">
+  <div class="container">
+    <div class="mark-wrapper">
+       
+      <div class="title-mark">Peomas</div>
+    </div>
+  
+    <button id="menu-btn" class="btn menu-btn" type="button" data-bs-toggle="collapse" data-bs-target="#nav-menu">
+      <div class="menu-icon"><span></span><span></span><span></span></div>
+    </button>
+  
+    <div id="nav-menu" class="collapse menu-wrapper">
+      <ul>
+        
+          <li>
+            <a href="/">Home </a>
+          </li>
+        
+          <li>
+            <a href="/archives">Archives </a>
+          </li>
+        
+          <li>
+            <a href="/categories">Category </a>
+          </li>
+        
+          <li>
+            <a href="/tags">Tag </a>
+          </li>
+        
+          <li>
+            <a href="/about">About </a>
+          </li>
+        
+        <li class="search-icon">
+          <button class="btn" data-bs-toggle="modal" data-bs-target="#searchModal" aria-label="Search">
+            <i class="fas fa-search"></i>
+          </button>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  </header>
+
+  <main>
+    <div class="container">
+      <div id="main">
+        <div class="row py-5">
+          <div class="col">
+            <div class="row">
+  <div class="left-content">
+    <article class="post-wrapper markdown-body">
+  <h2 class="post-title">
+    TODO BLOG
+  </h2>
+  <div class="post-meta">
+    <time datetime="Invalid date Invalid date ">2022-01-23</time>
+    
+        by <span class="author">Thomas</span>
+    
+    
+      
+        <a class="tag" href="/categories/experience/">experience</a> 
+       
+    
+    
+      
+        <a class="tag" href="/tags/Javascript/">Javascript</a> 
+       
+    
+    
+  </div>
+  
+  <div id="content">
+    <h2 id="Class"><a href="#Class" class="headerlink" title="Class"></a>Class</h2><ul>
+<li><p>static</p>
+<ul>
+<li>静态方法中<code>this</code>指向类本身而非实例；</li>
+<li>静态方法可与非静态方法重名；</li>
+<li>父类静态方法可被子类继承；</li>
+</ul>
+</li>
+<li><p>getter &amp; setter</p>
+<ul>
+<li><p>用于对某个属性设置存值函数和取值函数，拦截该属性的存取行为；</p>
+</li>
+<li><p>‘get’ &amp; ‘set’ all in Descriptor;</p>
+</li>
+<li><pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript">set a(a) &#123;
+  this.a &#x3D; a; &#x2F;&#x2F; that will cause call maximum stack size error
+  &#x2F;&#x2F; should use this._a &#x3D; a;
+&#125;</code></pre></li>
+<li><p>getter 不能单独出现， getter与setter必须同级出现</p>
+</li>
+</ul>
+</li>
+<li><p><code>__proto__</code></p>
+<ul>
+<li>不建议使用，因为对当前实例<code>__proto__</code>属性操作会改变类本身，进而影响所有实例。</li>
+</ul>
+</li>
+<li><p>constructor</p>
+<ul>
+<li><code>constructor()</code> 类默认方法，new实例时自动调用该方法，如果没有显示调用，会被默认添加。</li>
+<li>子类可以调用父类构造方法，<code>super()</code> 可将子类参数提供给父类构造函数作为参数。</li>
+</ul>
+</li>
+<li><p>类内部定义所有方法是不可枚举的，但可通过<code>Object.getOwnPropertyNames(Class.prototype)</code> 或 <code>Object.getOwnPropertyDescriptors(Class.prototype)</code></p>
+</li>
+<li><p>super</p>
+<ul>
+<li>super 关键字在constructor中使用，需在this之前使用，只能调用一次</li>
+<li>可用来调用父类函数 <code>super.staticFnInParentClass()</code></li>
+<li>在普通方法中，super指向父类的原型对象，在静态方法中super指向父类</li>
+</ul>
+</li>
+<li><p>extends</p>
+<ul>
+<li><p>子类必须在constructor中调用super方法，负责实例时会报错，因为子类的this对象，需要先通过父类构造函数构造完成，得到与父类同样的实例属性和方法，在此基础上在加上子类方法与实例属性，如果不调用super方法，子类得不到this对象，会报ReferenceError</p>
+</li>
+<li><p>ES5的继承，实质是先创建子类的实例对象this，再将父类方法添加到this上（<code>Parent.apply(this)</code>）</p>
+<ul>
+<li><p><code>Child.call(this, prop)</code></p>
+</li>
+<li><pre><code class="js">var prototype = object(child.prototype);
+prototype.constructor = Child;
+Child.prototype = prototype;
+</code></pre>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Class 不存在变量提升hoisting</p>
+</li>
+</ul>
+<h2 id="call-apply-bind"><a href="#call-apply-bind" class="headerlink" title="call / apply / bind"></a>call / apply / bind</h2><ul>
+<li><code>call</code> / <code>apply</code> 都是为了改变函数运行时的上下文而存在的，即为了改变函数内部this指向；</li>
+<li>js 存在 ’定义是上下文‘， ‘运行时上下文’，‘上下文可以改变’ 概念；</li>
+<li>call 与 apply 作用完全一样，只是接收参数方式不一样，call 需要按顺序一个个传进去，apply则需要把参数最为数组传入；</li>
+<li><code>bind</code> 会创建一个新函数，不会立即执行； <code>apply</code>/<code>call</code> 会立即执行函数；</li>
+<li><code>bind</code> 可分多次传入参数，<code>apply</code> &amp; <code>call</code> 必须一次性传入；</li>
+<li>应用场景：数组追加（apply）；获取最大最小；</li>
+</ul>
+
+  </div>
+
+</article>
+  </div>
+  <div class="right-content">
+    <div id="toc" class="toc-wrapper"></div>
+  <div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+     
+  <button id="scroll-to-top" class="btn btn-top" aria-label="Scroll To Top">
+    <i class="fas fa-arrow-up"></i>
+  </button>
+ 
+
+  </main>
+
+  <div class="footer-wrapper">
+  <div class="left-content"></div>
+  <div class="right-content">
+    <div>Copyright &copy;2022</div>
+    <div>Powered By <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a> - Theme <a target="_blank" rel="noopener" href="https://github.com/thomasyu929/hexo-theme-peomas">Peomas</a></div>
+  </div>
+</div>
+
+  <div id="searchModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Search</h5>
+        <button type="button" class="btn btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="input-wrapper">
+          <i class="fas fa-search"></i>
+          <input id="search" class="search-input" type="text" placeholder="Input content to search..." />
+        </div>
+        <ul id="result" class="list-group result-wrapper">
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5/dist/js/bootstrap.min.js"></script>
+
+
+<script src="/js/prism.js"></script>
+
+
+
+  
+<script src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js"></script>
+
+  
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css">
+
+  
+<script src="/js/nprogress.js"></script>
+
+
+
+ 
+  
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.11.1/tocbot.min.js"></script>
+
+  
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.11.1/tocbot.css">
+
+ 
+
+
+<script src="/js/event.js"></script>
+
+
+<script src="/js/search.js"></script>
+
+
+<script src="/js/plugin.js"></script>
+
+
+
+</body>
+
+</html>
